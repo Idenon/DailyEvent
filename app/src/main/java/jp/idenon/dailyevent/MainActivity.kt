@@ -13,7 +13,11 @@ class MainActivity : AppCompatActivity() {
 
         val event = DailyEventController()
 
-        button.setOnClickListener{
+        executeButton.setOnClickListener{
+            event.execute()
+        }
+
+        isDoneButton.setOnClickListener{
             if (event.isDoneDaily()) {
                 // true だった時の処理
                 Toast.makeText(applicationContext, "Done.", Toast.LENGTH_LONG).show()
