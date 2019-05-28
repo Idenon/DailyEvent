@@ -6,6 +6,8 @@ import java.util.*
 
 class DailyEventController {
 
+    var prevTime: Calendar? = null
+
     // デイリー範囲内で実行済みかどうかを返す
     fun isDoneDaily(): Boolean {
         return false
@@ -13,7 +15,8 @@ class DailyEventController {
 
     // イベントを実行し、実行時間を保持する
     fun execute() {
-        val prevTime = Calendar.getInstance()
-        Log.d("execute date", "date: ${prevTime.get(MINUTE)}")
+        val executeTime = Calendar.getInstance()
+        Log.d("execute date", "date: ${executeTime.get(MINUTE)}")
+        prevTime = executeTime
     }
 }
