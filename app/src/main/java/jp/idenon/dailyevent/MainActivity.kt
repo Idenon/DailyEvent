@@ -1,7 +1,7 @@
 package jp.idenon.dailyevent
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val event = DailyEventController()
+        val event = DailyEventController(0, 0)
 
         executeButton.setOnClickListener{
             event.execute()
