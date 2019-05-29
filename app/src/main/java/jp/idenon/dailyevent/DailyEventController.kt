@@ -34,4 +34,22 @@ class DailyEventController(val thresholdHour: Int, val thresholdMinute: Int) {
         isDone = true
     }
 
+    // 現在時刻の直前のリセット時刻を作る
+    fun calculateThresoldDate(thresholdHour: Int, thresholdMinute: Int, currentTime: Calendar){
+        var thresholdTime = currentTime
+
+        val currentHour = currentTime.get(Calendar.HOUR)
+        val currentMinute = currentTime.get(Calendar.MINUTE)
+
+        if (currentTime.get(Calendar.HOUR) > thresholdHour) {
+            thresholdHour.set(Calendar.HOUR, currentHour)
+        }
+
+    }
+
+    // 前回実行時間がリセット時刻より前にあるかどうかを返す
+    fun isBeforeResetTime(){
+
+    }
+
 }
