@@ -5,6 +5,7 @@ import org.junit.Test
 import java.util.*
 
 class DailyEventControllerTest {
+
     @Test
     fun calculateThresholdDateTest() {
 
@@ -14,14 +15,14 @@ class DailyEventControllerTest {
         var currentDate = setCalender(2019, 6, 3, 12, 0)
 
         // しきい値を 05:00 とする
-        var thresholdDate = dailyEvent.calculateThresoldDate(5, 0, currentDate)
+        var thresholdDate = dailyEvent.calculateThresholdDate(5, 0, currentDate)
 
         assertEquals(thresholdDate.get(Calendar.DATE), 3)
         assertEquals(thresholdDate.get(Calendar.HOUR_OF_DAY), 5)
         assertEquals(thresholdDate.get(Calendar.MINUTE), 0)
 
         // しきい値を 17:00 とする
-        thresholdDate = dailyEvent.calculateThresoldDate(14, 0, currentDate)
+        thresholdDate = dailyEvent.calculateThresholdDate(14, 0, currentDate)
 
         assertEquals(thresholdDate.get(Calendar.DATE), 2)
         assertEquals(thresholdDate.get(Calendar.HOUR_OF_DAY), 14)
@@ -33,7 +34,7 @@ class DailyEventControllerTest {
         currentDate = setCalender(2019, 0, 1, 0, 0)
 
         // しきい値を 05:00 とする
-        val thresholdDate2 = dailyEvent.calculateThresoldDate(5, 0, currentDate)
+        val thresholdDate2 = dailyEvent.calculateThresholdDate(5, 0, currentDate)
 
         assertEquals(thresholdDate2.get(Calendar.YEAR), 2018)
         assertEquals(thresholdDate2.get(Calendar.MONTH) ,11)
@@ -53,5 +54,13 @@ class DailyEventControllerTest {
         date.set(Calendar.MINUTE, minute)
 
         return date
+    }
+
+    @Test
+    fun diffCalendarTest(){
+        val a = setCalender(2019, 0, 1, 0, 0)
+        val b = setCalender(1990, 0, 1, 0, 0)
+
+        assertEquals(a.after(b), true)
     }
 }

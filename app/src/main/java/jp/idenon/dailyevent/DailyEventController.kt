@@ -1,6 +1,5 @@
 package jp.idenon.dailyevent
 
-import android.icu.util.Calendar.DATE
 import android.icu.util.Calendar.MINUTE
 import android.util.Log
 import java.util.*
@@ -18,9 +17,12 @@ class DailyEventController(val thresholdHour: Int, val thresholdMinute: Int) {
 
         // 現在時刻を取得する
         val currentTime = Calendar.getInstance()
+        // 直近のしきい日時を計算する
+        val thresholdTime = calculateThresholdDate(thresholdHour, thresholdMinute, currentTime)
 
-        // ２日以上離れていたら確実に超えている
-        if (executeTime.get(DATE) <= currentTime.get(DATE) - 2) return false
+        // しきい日時が、前回実行日時よりも後にあったら false
+        // |----+[executeTime]+----+[thresholdTime]+----+[currentTime]+---|
+        if (thresholdTime.after(executeTime)) return false
 
         Log.d("executeTime", "date: ${executeTime?.get(MINUTE)}")
         return true
@@ -35,26 +37,20 @@ class DailyEventController(val thresholdHour: Int, val thresholdMinute: Int) {
     }
 
     // 現在時刻の直前のリセット時刻を作る
-    fun calculateThresoldDate(thresholdHour: Int, thresholdMinute: Int, currentTime: Calendar): Calendar {
-        var thresholdTime = currentTime
+    fun calculateThresholdDate(thresholdHour: Int, thresholdMinute: Int, currentTime: Calendar): Calendar {
+        var thresholdTime = currentTime.clone() as Calendar
 
-        val currentDate = currentTime.get(Calendar.DATE)
-        val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
-        val currentMinute = currentTime.get(Calendar.MINUTE)
-
-        if (currentHour < thresholdHour) {
-            thresholdTime.add(Calendar.DAY_OF_MONTH, -1)
-        }
         thresholdTime.set(Calendar.HOUR_OF_DAY, thresholdHour)
-
         thresholdTime.set(Calendar.MINUTE, thresholdMinute)
 
+        // 現在時刻がしきい日時より先に来てたら、しきい日時を１日前にする
+        if (currentTime.before(thresholdTime)) {
+            thresholdTime.add(Calendar.DAY_OF_MONTH, -1)
+        }
+
+        Log.d("threshold", "threshold time is: ${thresholdTime.get(Calendar.MONTH)+1}/${thresholdTime.get(Calendar.DAY_OF_MONTH)} ${thresholdTime.get(Calendar.HOUR_OF_DAY)}:${thresholdTime.get(Calendar.MINUTE)}")
+
         return thresholdTime
-    }
-
-    // 前回実行時間がリセット時刻より前にあるかどうかを返す
-    fun isBeforeResetTime() {
-
     }
 
 }
